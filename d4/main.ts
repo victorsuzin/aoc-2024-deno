@@ -1,3 +1,27 @@
+async function pt_2() :Promise<number>{
+  const txt = await Deno.readTextFile('data.txt');
+  const rows = txt.split("\r\n");
+  const splitted_rows = txt.split("\r\n").map(e => e.split(""));
+  let count_matches = 0;
+  for(let i = 1; i < splitted_rows.length - 1; i++){
+    for(let j = 1; j < splitted_rows[i].length - 1; j++){
+      if(splitted_rows[i][j] != 'A') continue;
+      if(
+        (
+          (splitted_rows[i-1][j-1] === 'M' && splitted_rows[i+1][j+1] === 'S') ||
+          (splitted_rows[i-1][j-1] === 'S' && splitted_rows[i+1][j+1] === 'M')
+        ) && (
+          (splitted_rows[i-1][j+1] === 'M' && splitted_rows[i+1][j-1] === 'S') ||
+          (splitted_rows[i-1][j+1] === 'S' && splitted_rows[i+1][j-1] === 'M')
+        )
+      ){
+        count_matches++;
+      }
+    }
+  }
+  return count_matches;
+}
+
 async function pt_1() :Promise<number>{
   const txt = await Deno.readTextFile('data.txt');
   const rows = txt.split("\r\n");
@@ -25,7 +49,6 @@ async function pt_1() :Promise<number>{
     fwd_diag_prep.push([]);
   }
 
-  /* O(n*m) - ToDo research better performin solution */
   for(let i = 0; i < rows[0].length; i++){
     let r = 0;
     let c = 0;
@@ -38,7 +61,6 @@ async function pt_1() :Promise<number>{
     };
   }
   
-  /* O(n*m) - ToDo research better performin solution */
   for(let i = 1; i < cols[0].length; i++){
     let r = 0;
     let c = 0;
@@ -53,11 +75,6 @@ async function pt_1() :Promise<number>{
 
   const fwd_diag = fwd_diag_prep.map(e => e.join(""));
   const reversed_fwd_diag = fwd_diag_prep.map(e => e.reverse().join(""));
-
-
-
-
-  
 
   let bwd_diag_prep = [];
   let bwd_diag_idx = 0;
@@ -98,38 +115,39 @@ async function pt_1() :Promise<number>{
   let count_matches = 0;
   for(const r of rows){
     const cur_matches = r.match(/XMAS/g)?.length;
-    count_matches += r.match(/XMAS/g)?.length ? r.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const r of reversed_rows){
     const cur_matches = r.match(/XMAS/g)?.length;
-    count_matches += r.match(/XMAS/g)?.length ? r.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const c of cols){
     const cur_matches = c.match(/XMAS/g)?.length;
-    count_matches += c.match(/XMAS/g)?.length ? c.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const c of reversed_cols){
     const cur_matches = c.match(/XMAS/g)?.length;
-    count_matches += c.match(/XMAS/g)?.length ? c.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const d of fwd_diag){
     const cur_matches = d.match(/XMAS/g)?.length;
-    count_matches += d.match(/XMAS/g)?.length ? d.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const d of reversed_fwd_diag){
     const cur_matches = d.match(/XMAS/g)?.length;
-    count_matches += d.match(/XMAS/g)?.length ? d.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const d of bwd_diag){
     const cur_matches = d.match(/XMAS/g)?.length;
-    count_matches += d.match(/XMAS/g)?.length ? d.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
   for(const d of reversed_bwd_diag){
     const cur_matches = d.match(/XMAS/g)?.length;
-    count_matches += d.match(/XMAS/g)?.length ? d.match(/XMAS/g)?.length : 0;
+    count_matches += cur_matches ? cur_matches : 0;
   }
 
-  console.log(count_matches);
+  return count_matches;
 }
 
-await pt_1();
+console.log(await pt_1());
+console.log(await pt_2());
