@@ -63,4 +63,20 @@ function pt_1(){
   console.log(result);
 }
 
+function pt_2(){
+  //let trails :Array<trail> = [];
+  let result :number = 0;
+  for(let row = 0; row < map.length; row++){
+    for(let col = 0; col < map[row].length; col++){
+      if(Number(map[row][col])) continue;
+      const cur_trailhead :coordinate = {row: row, col: col, height: 0};
+      const trailends = follow_trail([cur_trailhead], cur_trailhead).filter(e => e.height === 9);
+      result += trailends.length;
+      //trails = trails.concat(new_trails);
+    }
+  }
+  console.log(result);
+}
+
 pt_1();
+pt_2();
